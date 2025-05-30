@@ -1,29 +1,53 @@
+// src/components/Write.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuth } from '../contexts/AuthContext';
 
 const PageWrapper = styled.div`
   padding: 20px;
 `;
 
-const TextArea = styled.textarea`
+const Form = styled.form`
+  max-width: 600px;
+  margin-top: 20px;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+`;
+
+const Input = styled.input`
   width: 100%;
-  height: 150px;
   padding: 10px;
-  font-size: 1rem;
-  margin-bottom: 15px;
-  border-radius: 4px;
+  margin-bottom: 14px;
   border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+`;
+
+const Textarea = styled.textarea`
+  width: 100%;
+  min-height: 140px;
+  padding: 10px;
+  margin-bottom: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
   resize: vertical;
 `;
 
-const SubmitButton = styled.button`
-  background-color: #bfa14a;
-  color: white;
+const Button = styled.button`
+  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.body};
   border: none;
-  padding: 12px 25px;
+  padding: 12px 24px;
+  font-weight: 700;
   cursor: pointer;
   border-radius: 4px;
-  font-weight: bold;
+  font-size: 16px;
 
   &:disabled {
     background-color: #999;
@@ -31,38 +55,66 @@ const SubmitButton = styled.button`
   }
 `;
 
-const Write = () => {
+const ErrorMsg = styled.p`
+  color: red;
+  font-weight: 600;
+`;
+
+const SuccessMsg = styled.p`
+  color: green;
+  font-weight: 600;
+`;
+
+function Write() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!content.trim()) {
-      setMessage('Please enter your post content.');
+    setError('');
+    setSuccess('');
+
+    if (!title.trim() || !content.trim()) {
+      setError('Both title and content are required.');
       return;
     }
 
     setLoading(true);
-    setMessage(null);
 
     try {
       const response = await fetch('https://my-api-r1ts.onrender.com/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,  // assuming user.token holds auth token
         },
-        body: JSON.stringify({ content: content.trim() }),
+        body: JSON.stringify({
+          title: title.trim(),
+          content: content.trim(),
+          authorId: user.id,  // send user id as author
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit post.');
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to create post.');
       }
 
-      setMessage('Post submitted successfully!');
+      setSuccess('Post created successfully! Redirecting...');
+      setTitle('');
       setContent('');
-    } catch (error) {
-      setMessage(error.message || 'Something went wrong.');
+
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -71,21 +123,35 @@ const Write = () => {
   return (
     <PageWrapper>
       <h1>Write a New Post</h1>
-      <form onSubmit={handleSubmit}>
-        <TextArea
+      <Form onSubmit={handleSubmit}>
+        <Label htmlFor="title">Title</Label>
+        <Input
+          id="title"
+          type="text"
+          placeholder="Enter post title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          disabled={loading}
+        />
+
+        <Label htmlFor="content">Content</Label>
+        <Textarea
+          id="content"
           placeholder="Write your post content here..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
           disabled={loading}
         />
-        <br />
-        <SubmitButton type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit Post'}
-        </SubmitButton>
-      </form>
-      {message && <p style={{ marginTop: '15px' }}>{message}</p>}
+
+        {error && <ErrorMsg>{error}</ErrorMsg>}
+        {success && <SuccessMsg>{success}</SuccessMsg>}
+
+        <Button type="submit" disabled={loading}>
+          {loading ? 'Posting...' : 'Post'}
+        </Button>
+      </Form>
     </PageWrapper>
   );
-};
+}
 
-export default Write;
+export default Write
