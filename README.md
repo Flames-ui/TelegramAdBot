@@ -1,49 +1,31 @@
-<div id="top"></div>
-<p align="center">
-  <img src="https://img.shields.io/github/contributors/pythonlarp/TelegramAdBot.svg?style=for-the-badge"/>
-  <img src="https://img.shields.io/github/forks/pythonlarp/TelegramAdBot.svg?style=for-the-badge"/>
-  <img src="https://img.shields.io/github/stars/pythonlarp/TelegramAdBot.svg?style=for-the-badge"/>
-  <img src="https://img.shields.io/github/issues/pythonlarp/TelegramAdBot.svg?style=for-the-badge"/>
-</p>
-  
----------------------------------------
-  
-<br/>
-<div align="center">
-  <a href="https://github.com/pythonlarp/TelegramAdBot">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" alt="Logo" width="120" height="120">
-  </a>
-  
-  <h2 align="center">Telegram Advertisement Bot</h3>
+# Anointed Flames TV - React Frontend
 
-  <p align="center">
-    Advertise all of your Telegram services automatically, for free!
-    <br />
-    <br />
-    <a href="https://github.com/pythonlarp/TelegramAdBot/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/pythonlarp/TelegramAdBot/issues">Request Feature</a>
-  </p>
-</div>
+This is the React frontend for **Anointed Flames TV**, a gospel-focused social platform inspired by Facebook, featuring a gold and black theme with light and dark mode toggle.
 
----------------------------------------
+---
 
-* Forget about manual advertising!
-* Bulk join groups
-* Easy to use
-* Clean user interface
+## Features
 
----------------------------------------
+- React 18 with functional components and hooks  
+- React Router v6 for page navigation  
+- Styled-components for CSS-in-JS theming  
+- Gold & black color scheme with light/dark mode toggle  
+- Basic routing: Home (Feed) and Login pages implemented  
+- Responsive and clean UI foundation for further development
 
-# How to use it
-To use this bot it is fairly simple, all you need to do is:
-1) Create a Telegram channel and post your message.<br>
-2) Install Python if you don't already have it installed. Make sure you tick the "Add Python to PATH" checkbox on the first page of the installer. Go to https://www.python.org/downloads, then click "Download Python 3.11.4". 
-3) Once you have Python, click [here](https://github.com/pythonlarp/TelegramAdBot/archive/refs/heads/main.zip) to download the tool. Extract the zip file and open the folder it extracted to.  
-4) Open the "start.bat" file (or run `pip install -r requirements.txt` and `python main.py` in cmd) 
-5) It will ask you to log in to your Telegram account, afterward press `n` so you don't join groups (if you want to, put a list of groups to join in the groups.txt file), find the ID of the channel where you posted the message and type the same ID in the console.<br>
-3) The console will show you all the messages in that channel, find the ID of the message you want to mass forward and type it in.<br>
-4) Watch the magic unfold!
+---
 
-### Contact
-Contact me on [Telegram](https://t.me/pythonlarp) for paid dev work
+## Getting Started
+
+### Prerequisites
+
+- Node.js (>=14.x recommended)  
+- npm (comes with Node.js)  
+
+### Installation
+
+1. Clone the repo or download the source code.
+
+```bash
+git clone https://github.com/yourusername/anointed-flames-tv-frontend.git
+cd anointed-flames-tv-frontend
