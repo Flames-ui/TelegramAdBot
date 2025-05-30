@@ -1,10 +1,11 @@
 // src/App.js
-import React, { useState } from 'react';import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { HashRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
-import Profile from './components/Profile';  // <-- imported Profile component
+import Profile from './components/Profile';
 
 // Global styles
 const GlobalStyle = createGlobalStyle`
@@ -46,7 +47,7 @@ const ToggleButton = styled.button`
   font-weight: bold;
 `;
 
-// Home Component
+// Home Page
 const Home = () => {
   const { user, logout } = useAuth();
 
@@ -65,7 +66,7 @@ const Home = () => {
   );
 };
 
-// Write Component (Full working form with API POST)
+// Write Page
 const Write = () => {
   const { user } = useAuth();
   const [title, setTitle] = useState('');
@@ -88,14 +89,12 @@ const Write = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`, // Assuming you have token auth
+          Authorization: `Bearer ${user.token}`,
         },
-        body: JSON.stringify({ title: title.trim(), content: content.trim(), authorId: user.id }),
+        body: JSON.stringify({ title, content, authorId: user.id }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to submit post.');
-      }
+      if (!response.ok) throw new Error('Failed to submit post.');
 
       setMessage('Post submitted successfully!');
       setTitle('');
@@ -164,7 +163,7 @@ const Write = () => {
   );
 };
 
-// Login Component
+// Login Page
 const Login = () => {
   const { user, login } = useAuth();
   const navigate = useNavigate();
@@ -218,13 +217,14 @@ const Login = () => {
   );
 };
 
-// Signup Component
+// Signup Page
 const Signup = () => (
   <PageWrapper>
     <h1>Signup Page (Coming soon)</h1>
   </PageWrapper>
 );
 
+// App Root Component
 function App() {
   const [isDark, setIsDark] = useState(true);
   const toggleTheme = () => setIsDark((prev) => !prev);
