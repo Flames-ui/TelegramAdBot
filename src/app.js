@@ -66,13 +66,85 @@ const Home = () => {
   );
 };
 
-// Write Component
-const Write = () => (
-  <PageWrapper>
-    <h1>Write Post</h1>
-    <p>This is where users can write new posts (Coming soon).</p>
-  </PageWrapper>
-);
+// Write Component (Full working form with API POST)
+const Write = () => {
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!content.trim()) {
+      setMessage('Please enter your post content.');
+      return;
+    }
+
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      const response = await fetch('https://my-api-r1ts.onrender.com/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: content.trim() }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit post.');
+      }
+
+      setMessage('Post submitted successfully!');
+      setContent('');
+    } catch (error) {
+      setMessage(error.message || 'Something went wrong.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <PageWrapper>
+      <h1>Write a New Post</h1>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          placeholder="Write your post content here..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          disabled={loading}
+          style={{
+            width: '100%',
+            height: '150px',
+            padding: '10px',
+            fontSize: '1rem',
+            marginBottom: '15px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            resize: 'vertical',
+          }}
+        />
+        <br />
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            backgroundColor: '#bfa14a',
+            color: 'white',
+            border: 'none',
+            padding: '12px 25px',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            borderRadius: '4px',
+            fontWeight: 'bold',
+          }}
+        >
+          {loading ? 'Submitting...' : 'Submit Post'}
+        </button>
+      </form>
+      {message && <p style={{ marginTop: '15px' }}>{message}</p>}
+    </PageWrapper>
+  );
+};
 
 // Login Component
 const Login = () => {
