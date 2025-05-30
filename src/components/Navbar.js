@@ -29,7 +29,7 @@ const NavLinks = styled.div`
     cursor: pointer;
     font-size: 1rem;
     padding: 0;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -55,7 +55,9 @@ export default function Navbar() {
           <>
             <Link to="/profile">Profile</Link>
             <Link to="/write">Write</Link>
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout} aria-label="Logout">
+              Logout
+            </button>
           </>
         ) : (
           <>
