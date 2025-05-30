@@ -15,15 +15,21 @@ const Nav = styled.nav`
 const Logo = styled.h2`
   color: ${({ theme }) => theme.body};
   margin: 0;
+  cursor: default;
 `;
 
 const NavLinks = styled.div`
-  a {
+  a, button {
     color: ${({ theme }) => theme.body};
     margin-left: 20px;
     text-decoration: none;
     font-weight: bold;
-
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0;
+    
     &:hover {
       text-decoration: underline;
     }
@@ -34,7 +40,8 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
     logout();
     navigate('/login');
   };
@@ -48,7 +55,7 @@ export default function Navbar() {
           <>
             <Link to="/profile">Profile</Link>
             <Link to="/write">Write</Link>
-            <a href="#logout" onClick={handleLogout}>Logout</a>
+            <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
           <>
@@ -59,4 +66,4 @@ export default function Navbar() {
       </NavLinks>
     </Nav>
   );
-}
+          }
