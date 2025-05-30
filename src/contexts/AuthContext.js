@@ -1,19 +1,22 @@
 import React, { createContext, useContext, useState } from 'react';
 
-// Create the AuthContext object
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
-// Provider component to wrap around your app
-export function AuthProvider({ children }) {
-  // State to hold the user object (null if not logged in)
+export const AuthProvider = ({ children }) => {
+  // Initially no user
   const [user, setUser] = useState(null);
 
-  // Function to log in a user (fake login)
+  // Fake login function (replace with your API call)
   const login = (username) => {
-    setUser({ name: username });
+    // Example user object returned by your API
+    const loggedInUser = {
+      id: 'user123',      // unique user id from your API
+      name: username,
+      role: username === 'admin' ? 'admin' : 'user' // simple example
+    };
+    setUser(loggedInUser);
   };
 
-  // Function to log out
   const logout = () => {
     setUser(null);
   };
@@ -23,9 +26,6 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-// Custom hook to use the AuthContext in other components easily
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);
