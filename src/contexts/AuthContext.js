@@ -1,38 +1,31 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-// Create AuthContext
-const AuthContext = createContext();
+// Create the AuthContext object
+const AuthContext = createContext(null);
 
-// AuthProvider component
+// Provider component to wrap around your app
 export function AuthProvider({ children }) {
+  // State to hold the user object (null if not logged in)
   const [user, setUser] = useState(null);
 
-  // Mock login function
-  const login = (email, password) => {
-    // For now, just accept any email/password and "log in"
-    setUser({ email });
-    return true;
+  // Function to log in a user (fake login)
+  const login = (username) => {
+    setUser({ name: username });
   };
 
-  // Mock signup function
-  const signup = (email, password) => {
-    // Accept any signup info
-    setUser({ email });
-    return true;
-  };
-
+  // Function to log out
   const logout = () => {
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-// Hook for consuming context
+// Custom hook to use the AuthContext in other components easily
 export function useAuth() {
   return useContext(AuthContext);
-    
+}
