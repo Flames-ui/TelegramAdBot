@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'r
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-import Navbar from './components/Navbar';  // your Navbar component
+import Navbar from './components/Navbar';
+import Profile from './components/Profile';  // <-- imported Profile component
 
 // Global styles
 const GlobalStyle = createGlobalStyle`
@@ -58,25 +59,6 @@ const Home = () => {
           <p>Welcome, {user.name}!</p>
           <button onClick={logout}>Logout</button>
         </>
-      ) : (
-        <p>You are not logged in.</p>
-      )}
-    </PageWrapper>
-  );
-};
-
-// Profile Component
-const Profile = () => {
-  const { user } = useAuth();
-
-  return (
-    <PageWrapper>
-      <h1>Profile</h1>
-      {user ? (
-        <div>
-          <p>Name: {user.name}</p>
-          {/* Add more profile details here */}
-        </div>
       ) : (
         <p>You are not logged in.</p>
       )}
