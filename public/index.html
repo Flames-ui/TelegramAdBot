@@ -2,13 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Your Home of Gospel" />
   <title>Anointed Flames TV</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f9f9f9;
+      transition: background 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: white;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .auth-buttons {
+      margin-top: 30px;
+    }
+    #bible-verse {
+      margin-top: 30px;
+      font-style: italic;
+    }
+  </style>
 </head>
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <h1 id="main-heading">Anointed Flames TV</h1>
+  <p>Your Home of Gospel</p>
+
+  <button id="toggle-theme">Switch to Dark Mode</button>
+
+  <div class="auth-buttons">
+    <button onclick="location.href='signup.html'">Join Now</button>
+    <button onclick="location.href='signin.html'">Sign In</button>
+  </div>
+
+  <div id="bible-verse"></div>
+
+  <script src="script.js"></script>
 </body>
-                                                            </html
+</html>
