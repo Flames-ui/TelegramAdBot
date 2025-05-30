@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import PrivateRoute from './components/PrivateRoute'; // <-- New import
+import PrivateRoute from './components/PrivateRoute';
+import Navbar from './components/Navbar'; // <--- Added
 
 // Global styles
 const GlobalStyle = createGlobalStyle`
@@ -133,6 +134,7 @@ function App() {
       <GlobalStyle />
       <AuthProvider>
         <Router>
+          <Navbar />
           <ToggleButton onClick={toggleTheme}>
             Switch to {isDark ? 'Light' : 'Dark'} Mode
           </ToggleButton>
