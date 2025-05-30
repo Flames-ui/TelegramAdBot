@@ -1,9 +1,10 @@
+// src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-import Navbar from './components/Navbar'; // <--- Added
+import Navbar from './components/Navbar';  // your Navbar component
 
 // Global styles
 const GlobalStyle = createGlobalStyle`
@@ -45,7 +46,7 @@ const ToggleButton = styled.button`
   font-weight: bold;
 `;
 
-// Home
+// Home Component
 const Home = () => {
   const { user, logout } = useAuth();
 
@@ -64,7 +65,34 @@ const Home = () => {
   );
 };
 
-// Login
+// Profile Component
+const Profile = () => {
+  const { user } = useAuth();
+
+  return (
+    <PageWrapper>
+      <h1>Profile</h1>
+      {user ? (
+        <div>
+          <p>Name: {user.name}</p>
+          {/* Add more profile details here */}
+        </div>
+      ) : (
+        <p>You are not logged in.</p>
+      )}
+    </PageWrapper>
+  );
+};
+
+// Write Component
+const Write = () => (
+  <PageWrapper>
+    <h1>Write Post</h1>
+    <p>This is where users can write new posts (Coming soon).</p>
+  </PageWrapper>
+);
+
+// Login Component
 const Login = () => {
   const { user, login } = useAuth();
   const navigate = useNavigate();
@@ -118,7 +146,7 @@ const Login = () => {
   );
 };
 
-// Signup
+// Signup Component
 const Signup = () => (
   <PageWrapper>
     <h1>Signup Page (Coming soon)</h1>
@@ -138,12 +166,29 @@ function App() {
           <ToggleButton onClick={toggleTheme}>
             Switch to {isDark ? 'Light' : 'Dark'} Mode
           </ToggleButton>
+
           <Routes>
             <Route
               path="/"
               element={
                 <PrivateRoute>
                   <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/write"
+              element={
+                <PrivateRoute>
+                  <Write />
                 </PrivateRoute>
               }
             />
