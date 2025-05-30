@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import PrivateRoute from './components/PrivateRoute'; // <-- New import
 
-// Global Styles to handle body background and font color based on theme
+// Global styles
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
@@ -14,27 +15,24 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// Define Light and Dark theme colors (Gold & Black based)
 const lightTheme = {
-  body: '#f8f1e7',      // light cream/goldish background
-  text: '#333333',      // dark text
-  primary: '#bfa14a',   // gold
-  secondary: '#000000'  // black
+  body: '#f8f1e7',
+  text: '#333333',
+  primary: '#bfa14a',
+  secondary: '#000000'
 };
 
 const darkTheme = {
-  body: '#121212',      // dark background
-  text: '#f8f1e7',      // light text
-  primary: '#d4af37',   // bright gold
-  secondary: '#000000'  // black
+  body: '#121212',
+  text: '#f8f1e7',
+  primary: '#d4af37',
+  secondary: '#000000'
 };
 
-// Container styling
 const PageWrapper = styled.div`
   padding: 20px;
 `;
 
-// Button to toggle theme
 const ToggleButton = styled.button`
   background-color: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.body};
@@ -46,7 +44,7 @@ const ToggleButton = styled.button`
   font-weight: bold;
 `;
 
-// Home page showing login status and logout button
+// Home
 const Home = () => {
   const { user, logout } = useAuth();
 
@@ -65,7 +63,7 @@ const Home = () => {
   );
 };
 
-// Login page with simple form
+// Login
 const Login = () => {
   const { user, login } = useAuth();
   const navigate = useNavigate();
@@ -78,13 +76,10 @@ const Login = () => {
       return;
     }
     login(username.trim());
-    navigate('/'); // redirect to home after login
+    navigate('/');
   };
 
-  if (user) {
-    // If already logged in, redirect to home
-    return <Navigate to="/" />;
-  }
+  if (user) return <Navigate to="/" />;
 
   return (
     <PageWrapper>
@@ -122,7 +117,7 @@ const Login = () => {
   );
 };
 
-// Simple Signup placeholder
+// Signup
 const Signup = () => (
   <PageWrapper>
     <h1>Signup Page (Coming soon)</h1>
@@ -130,9 +125,7 @@ const Signup = () => (
 );
 
 function App() {
-  // State to toggle theme
   const [isDark, setIsDark] = useState(true);
-
   const toggleTheme = () => setIsDark((prev) => !prev);
 
   return (
@@ -144,7 +137,14 @@ function App() {
             Switch to {isDark ? 'Light' : 'Dark'} Mode
           </ToggleButton>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="*" element={<Navigate to="/" />} />
