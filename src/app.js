@@ -68,14 +68,16 @@ const Home = () => {
 
 // Write Component (Full working form with API POST)
 const Write = () => {
+  const { user } = useAuth();
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!content.trim()) {
-      setMessage('Please enter your post content.');
+    if (!title.trim() || !content.trim()) {
+      setMessage('Please enter both title and content.');
       return;
     }
 
@@ -87,8 +89,9 @@ const Write = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`, // Assuming you have token auth
         },
-        body: JSON.stringify({ content: content.trim() }),
+        body: JSON.stringify({ title: title.trim(), content: content.trim(), authorId: user.id }),
       });
 
       if (!response.ok) {
@@ -96,6 +99,7 @@ const Write = () => {
       }
 
       setMessage('Post submitted successfully!');
+      setTitle('');
       setContent('');
     } catch (error) {
       setMessage(error.message || 'Something went wrong.');
@@ -108,6 +112,21 @@ const Write = () => {
     <PageWrapper>
       <h1>Write a New Post</h1>
       <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Post Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          disabled={loading}
+          style={{
+            width: '100%',
+            padding: '10px',
+            marginBottom: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontSize: '1rem',
+          }}
+        />
         <textarea
           placeholder="Write your post content here..."
           value={content}
